@@ -13,11 +13,31 @@ public class Produto {
     private String nome;
     private String caracteristica;
     private double precoInicial;
+    private String nomeVencedor;
+    private double precoVencedor;
     public Produto(String nome, String carac, double precoInicial){
         this.nome = nome;
         this.caracteristica = carac;
-        this.precoInicial = precoInicial;       
+        this.precoInicial = precoInicial;
+        this.precoVencedor = precoInicial;
+        this.nomeVencedor = "";
     
+    }
+
+    public String getNomeVencedor() {
+        return nomeVencedor;
+    }
+
+    public void setNomeVencedor(String nomeVencedor) {
+        this.nomeVencedor = nomeVencedor;
+    }
+
+    public double getPrecoVencedor() {
+        return precoVencedor;
+    }
+
+    public void setPrecoVencedor(double precoVencedor) {
+        this.precoVencedor = precoVencedor;
     }
 
     public String getNome() {

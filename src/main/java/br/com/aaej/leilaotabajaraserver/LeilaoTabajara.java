@@ -20,6 +20,7 @@ public class LeilaoTabajara extends javax.swing.JFrame {
     ArrayList<Produto> produtos = new ArrayList<>();
     public LeilaoTabajara() {
         initComponents();
+        atualizarProduto();
     }
 
     /**
