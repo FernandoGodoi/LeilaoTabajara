@@ -134,7 +134,9 @@ public class LeilaoTabajara extends javax.swing.JFrame {
 
     private void jButtonIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonIniciarActionPerformed
         // TODO add your handling code here:
-        
+        IniciarLeilaoFrame l = new IniciarLeilaoFrame();
+        l.leiloar(Integer.parseInt(jTextFieldPorta.getText()), produtos);
+        l.setVisible(true);
     }//GEN-LAST:event_jButtonIniciarActionPerformed
     public void atualizarProduto(){
         DefaultListModel listModel = new DefaultListModel();

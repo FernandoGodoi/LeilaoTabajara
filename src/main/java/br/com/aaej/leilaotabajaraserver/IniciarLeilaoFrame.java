@@ -6,6 +6,7 @@
 package br.com.aaej.leilaotabajaraserver;
 
 import java.util.ArrayList;
+import javax.swing.DefaultListModel;
 
 /**
  *
@@ -22,11 +23,29 @@ public class IniciarLeilaoFrame extends javax.swing.JFrame {
 
     public IniciarLeilaoFrame() {
         initComponents();
+        
+        
     }
 
     public void leiloar(int porta, ArrayList produtos) {
         this.produtos = produtos;
         this.server = new Servidor(porta, this);
+        atualizarProdutos();
+    }
+    public void atualizarProdutos(){
+        DefaultListModel listModel = new DefaultListModel();
+        produtos.forEach((p) -> {
+            listModel.addElement(p.toString());
+        });
+        jList1.setModel(listModel);
+    }
+    public void adicionarConexao(Conexao c){
+        conexoes.add(c);
+        DefaultListModel listModel = new DefaultListModel();
+        conexoes.forEach((cx) -> {
+            listModel.addElement(cx.nome);
+        });
+        jList2.setModel(listModel);    
     }
 
     /**
@@ -51,18 +70,8 @@ public class IniciarLeilaoFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane1.setViewportView(jList1);
 
-        jList2.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane2.setViewportView(jList2);
 
         jLabel1.setText("Itens");
@@ -88,7 +97,7 @@ public class IniciarLeilaoFrame extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane2))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
