@@ -179,6 +179,7 @@ public class IniciarLeilaoFrame extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        System.out.println(jList1.getSelectedIndex()+"  :"+produtos.get(jList1.getSelectedIndex()).toString());
         produtos.get(jList1.getSelectedIndex()).setFinalizado(true);
         atualizarProdutos();
     }//GEN-LAST:event_jButton2ActionPerformed

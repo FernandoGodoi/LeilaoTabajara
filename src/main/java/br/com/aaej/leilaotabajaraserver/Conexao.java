@@ -37,6 +37,7 @@ public class Conexao extends Thread {
 
     public void send(String data) throws IOException {
         out.writeUTF(data);
+        System.out.println("Enviando "+data);
     }
 
     @Override
@@ -68,6 +69,7 @@ public class Conexao extends Thread {
                             if (p.getPrecoVencedor()>= Double.parseDouble(msg[2])){
                                 send("1;Valor invalido");
                             }else{
+                                send("1;Lance Aceito");
                                 p.setNomeVencedor(nome);
                                 p.setPrecoVencedor(Double.parseDouble(msg[2]));
                                 leilao.atualizarProdutos();
