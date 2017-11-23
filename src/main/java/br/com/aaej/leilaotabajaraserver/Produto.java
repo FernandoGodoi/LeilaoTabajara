@@ -15,12 +15,22 @@ public class Produto {
     private double precoInicial;
     private String nomeVencedor;
     private double precoVencedor;
+    private boolean finalizado;
+
+    public boolean isFinalizado() {
+        return finalizado;
+    }
+
+    public void setFinalizado(boolean finalizado) {
+        this.finalizado = finalizado;
+    }
     public Produto(String nome, String carac, double precoInicial){
         this.nome = nome;
         this.caracteristica = carac;
         this.precoInicial = precoInicial;
         this.precoVencedor = precoInicial;
         this.nomeVencedor = "";
+        this.finalizado = false;
     
     }
 
@@ -66,6 +76,9 @@ public class Produto {
     @Override
     public String toString(){
         return this.nome+";"+this.precoInicial+";"+this.caracteristica;
+    }
+    public String listar(){
+        return this.nome+ "  Preço inicial: "+this.precoInicial+ "|  Lance vencedor: "+this.nomeVencedor +"= "+this.precoVencedor;
     }
     
 }

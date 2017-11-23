@@ -15,12 +15,13 @@ import java.net.Socket;
  * @author TI
  */
 public class Conexao extends Thread {
+
     DataInputStream in;
     DataOutputStream out;
     Socket clientSocket;
     String nome;
     IniciarLeilaoFrame leilao;
-    
+
     public Conexao(Socket aClientSocket, IniciarLeilaoFrame leilao) {
         try {
             clientSocket = aClientSocket;
@@ -28,12 +29,13 @@ public class Conexao extends Thread {
             out = new DataOutputStream(clientSocket.getOutputStream());
             nome = "";
             this.leilao = leilao;
-            
+
         } catch (IOException e) {
-            System.out.println("Connection: "+e.getMessage());
+            System.out.println("Connection: " + e.getMessage());
         }
     }
-    public void send(String data) throws IOException{
+
+    public void send(String data) throws IOException {
         out.writeUTF(data);
     }
 
@@ -41,21 +43,36 @@ public class Conexao extends Thread {
     public String toString() {
         return this.nome; //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     public void run() {
-        try {                   
-            
+        try {
+
             while (true) {
                 /* Receive message from client */
                 String data = in.readUTF();
-                System.out.print("\n\t[Receive - "+clientSocket.getInetAddress().toString()
-                        +":"+clientSocket.getPort()+"]: "+this.nome + " >  "+data);
+                System.out.print("\n\t[Receive - " + clientSocket.getInetAddress().toString()
+                        + ":" + clientSocket.getPort() + "]: " + this.nome + " >  " + data);
                 String[] msg = data.split(";");
-                
-                switch(Integer.parseInt(msg[0])){
+
+                switch (Integer.parseInt(msg[0])) {
                     case 1:
+                        this.nome = msg[1];
+                        leilao.atualizarConexao();
+                        send("1;Registrado!");
                         break;
                     case 2:
+                        Produto p = leilao.produtos.get(Integer.parseInt(msg[1]));
+                        if (p.isFinalizado()) {
+                            send("1;Este produto foi Finalizado!");
+                        } else {
+                            if (p.getPrecoVencedor()>= Double.parseDouble(msg[2])){
+                                send("1;Valor invalido");
+                            }else{
+                                p.setNomeVencedor(nome);
+                                p.setPrecoVencedor(Double.parseDouble(msg[2]));
+                                leilao.atualizarProdutos();
+                            }
+                        }
                         break;
                     case 3:
                         break;
@@ -63,14 +80,12 @@ public class Conexao extends Thread {
                         break;
                     default:
                 }
-                
+
                 /* Send the response to client */
-            
             }
-            
-            
+
         } catch (IOException e) {
-            System.out.println("IO: "+e.getMessage());
+            System.out.println("IO: " + e.getMessage());
         }
     }
 }

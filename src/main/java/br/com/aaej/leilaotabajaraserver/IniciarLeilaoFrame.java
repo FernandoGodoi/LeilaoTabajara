@@ -18,34 +18,55 @@ public class IniciarLeilaoFrame extends javax.swing.JFrame {
      * Creates new form IniciarLeilaoFrame
      */
     ArrayList<Produto> produtos;
+    String finalizado="";
     Servidor server;
-    ArrayList<Conexao> conexoes;
+    int i;
+    ArrayList<Conexao> conexoes = new ArrayList<>();
 
     public IniciarLeilaoFrame() {
         initComponents();
-        
-        
+
     }
 
     public void leiloar(int porta, ArrayList produtos) {
         this.produtos = produtos;
         this.server = new Servidor(porta, this);
+        server.start();
         atualizarProdutos();
     }
-    public void atualizarProdutos(){
+
+    public void atualizarProdutos() {        
         DefaultListModel listModel = new DefaultListModel();
+        i = 0;
         produtos.forEach((p) -> {
-            listModel.addElement(p.toString());
-        });
+            
+            if (p.isFinalizado()) {
+                finalizado = "Finalizado";
+            } else {
+                finalizado = "Aberto";
+            }
+            listModel.addElement("Numero item:"+ i +" "+p.listar()+"Situação: "+finalizado);
+            i++;
+        });        
         jList1.setModel(listModel);
+        
     }
-    public void adicionarConexao(Conexao c){
+
+    public void adicionarConexao(Conexao c) {
         conexoes.add(c);
+        atualizarConexao();
+    }
+
+    public void atualizarConexao() {
         DefaultListModel listModel = new DefaultListModel();
         conexoes.forEach((cx) -> {
-            listModel.addElement(cx.nome);
+            if (!cx.nome.equals("")) {
+                listModel.addElement(cx.nome);
+            } else {
+                listModel.addElement(cx.clientSocket.getInetAddress().toString());
+            }
         });
-        jList2.setModel(listModel);    
+        jList2.setModel(listModel);
     }
 
     /**
@@ -79,6 +100,11 @@ public class IniciarLeilaoFrame extends javax.swing.JFrame {
         jLabel2.setText("Compradores");
 
         jButton2.setText("Finalizar Item");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -86,30 +112,29 @@ public class IniciarLeilaoFrame extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 393, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel1)
                         .addGap(49, 49, 49)
-                        .addComponent(jButton2)))
-                .addGap(43, 43, 43)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jButton2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addContainerGap())
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 695, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(56, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2)
                     .addComponent(jButton2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
                     .addComponent(jScrollPane1))
                 .addGap(23, 23, 23))
@@ -144,14 +169,19 @@ public class IniciarLeilaoFrame extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        produtos.get(jList1.getSelectedIndex()).setFinalizado(true);
+        atualizarProdutos();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments

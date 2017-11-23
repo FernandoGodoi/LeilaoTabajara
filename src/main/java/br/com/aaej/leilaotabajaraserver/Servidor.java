@@ -32,7 +32,7 @@ public class Servidor extends Thread{
                         +clientSocket.getInetAddress().toString()+" at port "
                         +clientSocket.getPort());
                 Conexao c = new Conexao(clientSocket,leilao);
-                leilao.conexoes.add(c);
+                leilao.adicionarConexao(c);
                 c.start();
             }
         } catch (IOException e) {
