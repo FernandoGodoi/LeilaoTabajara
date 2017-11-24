@@ -5,7 +5,10 @@
  */
 package br.com.aaej.leilaotabajaraserver;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 
 /**
@@ -134,6 +137,12 @@ public class LeilaoTabajara extends javax.swing.JFrame {
 
     private void jButtonIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonIniciarActionPerformed
         // TODO add your handling code here:
+        GerarXML xml = new GerarXML();
+        try {
+            xml.gerar(produtos);
+        } catch (IOException ex) {
+            Logger.getLogger(LeilaoTabajara.class.getName()).log(Level.SEVERE, null, ex);
+        }
         IniciarLeilaoFrame l = new IniciarLeilaoFrame();
         l.leiloar(Integer.parseInt(jTextFieldPorta.getText()), produtos);
         l.setVisible(true);

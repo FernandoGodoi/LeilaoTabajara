@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<List>
+  <Produto>
+    <nome>PC</nome>
+    <caracteristica>pc</caracteristica>
+    <precoInicial>2000.0</precoInicial>
+  </Produto>
+  <Produto>
+    <nome>Note</nome>
+    <caracteristica>n</caracteristica>
+    <precoInicial>2100.0</precoInicial>
+  </Produto>
+</List>
+

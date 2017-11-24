@@ -25,6 +25,8 @@ public class ClienteFrame extends javax.swing.JFrame {
     DefaultListModel listModelLog = new DefaultListModel();
     ArrayList<Produto> produtos;
     Cliente conexao;
+    int i;
+    String finalizado;
 
     public ClienteFrame() {
         initComponents();
@@ -228,6 +230,9 @@ public class ClienteFrame extends javax.swing.JFrame {
         }else{
             System.out.println("Preencher todos os campos");
         }
+        LerXML lerXML = new LerXML();
+        this.produtos = lerXML.getList();
+        atualizarProdutos();
     }//GEN-LAST:event_jButtonConectActionPerformed
 
     private void jButtonSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSendActionPerformed
@@ -241,6 +246,22 @@ public class ClienteFrame extends javax.swing.JFrame {
     public void addLog(String text){
         listModelLog.addElement(text);
         jList2.setModel(listModelLog);
+    }
+    public void atualizarProdutos() {        
+        DefaultListModel listModel = new DefaultListModel();
+        i = 0;
+        produtos.forEach((p) -> {
+            
+            if (p.isFinalizado()) {
+                finalizado = "Finalizado";
+            } else {
+                finalizado = "Aberto";
+            }
+            listModel.addElement("Numero item:"+ i +" "+p.listar()+"Situação: "+finalizado);
+            i++;
+        });        
+        jList1.setModel(listModel);
+        
     }
     /**
      * @param args the command line arguments

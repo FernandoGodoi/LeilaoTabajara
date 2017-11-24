@@ -73,6 +73,7 @@ public class Conexao extends Thread {
                                 p.setNomeVencedor(nome);
                                 p.setPrecoVencedor(Double.parseDouble(msg[2]));
                                 leilao.atualizarProdutos();
+                                leilao.atualizarClientes("2;"+msg[1]+";"+msg[2]+";"+nome);
                             }
                         }
                         break;

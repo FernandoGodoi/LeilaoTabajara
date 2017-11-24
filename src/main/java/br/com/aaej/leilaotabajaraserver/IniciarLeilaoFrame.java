@@ -5,7 +5,10 @@
  */
 package br.com.aaej.leilaotabajaraserver;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 
 /**
@@ -51,7 +54,15 @@ public class IniciarLeilaoFrame extends javax.swing.JFrame {
         jList1.setModel(listModel);
         
     }
-
+    public void atualizarClientes(String msg){
+        conexoes.forEach((c) ->{
+            try {
+                c.send(msg);
+            } catch (IOException ex) {
+                Logger.getLogger(IniciarLeilaoFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+    }
     public void adicionarConexao(Conexao c) {
         conexoes.add(c);
         atualizarConexao();
@@ -182,6 +193,7 @@ public class IniciarLeilaoFrame extends javax.swing.JFrame {
         System.out.println(jList1.getSelectedIndex()+"  :"+produtos.get(jList1.getSelectedIndex()).toString());
         produtos.get(jList1.getSelectedIndex()).setFinalizado(true);
         atualizarProdutos();
+        atualizarClientes("3;"+jList1.getSelectedIndex());
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**

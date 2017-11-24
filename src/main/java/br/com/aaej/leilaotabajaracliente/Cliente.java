@@ -5,6 +5,7 @@
  */
 package br.com.aaej.leilaotabajaracliente;
 
+import br.com.aaej.leilaotabajaraserver.Produto;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -53,15 +54,23 @@ public class Cliente extends Thread{
                 String data = in.readUTF();
                 System.out.print("\n\t[Receive - By Server"  + data);
                 String[] msg = data.split(";");
-
+                Produto p;
                 switch (Integer.parseInt(msg[0])) {
                     case 1:
                         frame.addLog(msg[1]);
                         break;
                     case 2:
-                        
+                        p = frame.produtos.get(Integer.parseInt(msg[1]));
+                        p.setNomeVencedor(msg[3]);
+                        p.setPrecoVencedor(Double.parseDouble(msg[2]));
+                        frame.atualizarProdutos();
+                        frame.addLog("Lance atualizado: "+p.toString());
                         break;
                     case 3:
+                        p = frame.produtos.get(Integer.parseInt(msg[1]));
+                        p.setFinalizado(true);
+                        frame.atualizarProdutos();
+                        frame.addLog("Item "+p.getNome()+" Finalizado");
                         break;
                     case 4:
                         break;
