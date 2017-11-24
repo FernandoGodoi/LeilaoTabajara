@@ -11,4 +11,12 @@
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
     <name>LeilaoTabajara</name>
+    <dependencies>
+        <dependency>
+            <groupId>jdom</groupId>
+            <artifactId>jdom</artifactId>
+            <version>1.0</version>
+            <type>jar</type>
+        </dependency>
+    </dependencies>
 </project>

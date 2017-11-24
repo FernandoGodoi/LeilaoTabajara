@@ -6,7 +6,16 @@
 package br.com.aaej.leilaotabajaracliente;
 
 import br.com.aaej.leilaotabajaraserver.Produto;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.JDOMException;
+import org.jdom.input.SAXBuilder;
 
 /**
  *
@@ -34,6 +43,8 @@ public class LerXML {
             }
         } catch (JDOMException e) {
             e.printStackTrace();
+        } catch (IOException ex) {
+            Logger.getLogger(LerXML.class.getName()).log(Level.SEVERE, null, ex);
         }
         return produtos;
     }

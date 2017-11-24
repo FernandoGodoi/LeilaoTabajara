@@ -6,7 +6,12 @@
 package br.com.aaej.leilaotabajaraserver;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
 
 /**
  *
@@ -15,7 +20,7 @@ import java.util.ArrayList;
 public class GerarXML {    
     public GerarXML(){
     }
-    public void gerar(ArrayList<Produto> produtos){
+    public void gerar(ArrayList<Produto> produtos) throws IOException{
         Element root = new Element("List");
         produtos.forEach((p) -> {
             Element produto = new Element("Produto");
@@ -24,7 +29,7 @@ public class GerarXML {
             produto.addContent(nome);
             Element caracteristica = new Element("caracteristica").setText(p.getCaracteristica());
             produto.addContent(caracteristica);
-            Element precoInicial = new Element("precoInicial").setText(p.getPrecoInicial());
+            Element precoInicial = new Element("precoInicial").setText(""+p.getPrecoInicial());
             produto.addContent(precoInicial);
                     });
         Document doc = new Document(root);
