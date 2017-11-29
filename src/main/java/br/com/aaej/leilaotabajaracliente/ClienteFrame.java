@@ -236,9 +236,11 @@ public class ClienteFrame extends javax.swing.JFrame {
         //this.produtos = lerXML.getList();
         HttpGetProtutos ler = new HttpGetProtutos();
         try {
-            String json = ler.get("http://localhost:50301/LeilaoWS/webresources/leilao", "GET");
+            String json = ler.get("http://localhost:42383/LeilaoWeb/webresources/leilao", "GET");
             Gson g = new Gson();
             System.out.println(json);
+            json.replaceAll("\\", "-");
+            System.out.println(json);            
             java.lang.reflect.Type tipo = new TypeToken<ArrayList<Produto>>(){}.getType();
             this.produtos = g.fromJson(json,tipo);
             System.out.println("ok");

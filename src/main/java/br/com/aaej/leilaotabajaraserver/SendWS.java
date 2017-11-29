@@ -6,9 +6,11 @@
 package br.com.aaej.leilaotabajaraserver;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -37,6 +39,7 @@ public class SendWS {
         // Send post request
         con.setDoOutput(true);
         DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+        //Writer wr  = new BufferedWriter(new OutputStreamWriter(new DataOutputStream(con.getOutputStream())));
         wr.writeBytes(urlParameters);
         wr.flush();
         wr.close();

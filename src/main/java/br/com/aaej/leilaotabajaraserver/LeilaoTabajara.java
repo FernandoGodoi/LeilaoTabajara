@@ -5,6 +5,7 @@
  */
 package br.com.aaej.leilaotabajaraserver;
 
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -137,14 +138,17 @@ public class LeilaoTabajara extends javax.swing.JFrame {
 
     private void jButtonIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonIniciarActionPerformed
         // TODO add your handling code here:
-        GerarXML xml = new GerarXML();
+        //GerarXML xml = new GerarXML();
         try {
-            String r = xml.gerar(produtos);
+            //String r = xml.gerar(produtos);
+            Gson g = new Gson();
+            String r = g.toJson(produtos);
+            System.out.println("enviando json : "+r);
             SendWS send = new SendWS();
-            String url = "http://localhost:8080/LeilaoWS/webresources/leilao/Enviar";
-            System.out.println(send.sendPost(url, r, "POST"));
-        } catch (IOException ex) {
-            Logger.getLogger(LeilaoTabajara.class.getName()).log(Level.SEVERE, null, ex);
+            String url = "http://localhost:42383/LeilaoWeb/webresources/leilao";
+            System.out.println(send.sendPost(url, r, "PUT"));
+        //} catch (IOException ex) {
+        //  Logger.getLogger(LeilaoTabajara.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
             Logger.getLogger(LeilaoTabajara.class.getName()).log(Level.SEVERE, null, ex);
         }
