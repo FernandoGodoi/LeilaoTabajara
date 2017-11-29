@@ -6,6 +6,8 @@
 package br.com.aaej.leilaotabajaraserver;
 
 import java.io.IOException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,7 +24,8 @@ public class IniciarLeilaoFrame extends javax.swing.JFrame {
      */
     ArrayList<Produto> produtos;
     String finalizado="";
-    Servidor server;
+    ArrayList<String> clientes = new  ArrayList<>();
+    //Servidor server;
     int i;
     ArrayList<Conexao> conexoes = new ArrayList<>();
 
@@ -31,12 +34,32 @@ public class IniciarLeilaoFrame extends javax.swing.JFrame {
 
     }
 
-    public void leiloar(int porta, ArrayList produtos) {
+    public void leiloar (ArrayList produtos) {
         this.produtos = produtos;
-        this.server = new Servidor(porta, this);
-        server.start();
+//        this.server = new Servidor(porta, this);;;
+//        server.start();
+        startRMI();
         atualizarProdutos();
     }
+    
+    public void send(String data){
+        
+    }
+    
+    public void startRMI(){
+        try {
+            System.setProperty("java.rmi.server.hostname", "192.168.1.109");
+            Registry reg = LocateRegistry.createRegistry(50000);
+            LeilaoRMIApp app = new LeilaoRMIApp(this);
+            reg.rebind("app", app);
+            System.out.println("Servidor rmi pronto...");
+
+        } catch (Exception ex) {
+            System.out.println("Erro" + ex);
+        }
+    }
+
+
 
     public void atualizarProdutos() {        
         DefaultListModel listModel = new DefaultListModel();
@@ -55,27 +78,21 @@ public class IniciarLeilaoFrame extends javax.swing.JFrame {
         
     }
     public void atualizarClientes(String msg){
-        conexoes.forEach((c) ->{
-            try {
-                c.send(msg);
-            } catch (IOException ex) {
-                Logger.getLogger(IniciarLeilaoFrame.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
+        
     }
     public void adicionarConexao(Conexao c) {
         conexoes.add(c);
         atualizarConexao();
     }
-
+    public void adicionarComprador(String nome){
+        clientes.add(nome);
+    }
     public void atualizarConexao() {
         DefaultListModel listModel = new DefaultListModel();
-        conexoes.forEach((cx) -> {
-            if (!cx.nome.equals("")) {
-                listModel.addElement(cx.nome);
-            } else {
-                listModel.addElement(cx.clientSocket.getInetAddress().toString());
-            }
+        clientes.forEach((cx) -> {
+            
+                listModel.addElement(cx);
+            
         });
         jList2.setModel(listModel);
     }

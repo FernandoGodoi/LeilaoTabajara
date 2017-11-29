@@ -153,7 +153,7 @@ public class LeilaoTabajara extends javax.swing.JFrame {
             Logger.getLogger(LeilaoTabajara.class.getName()).log(Level.SEVERE, null, ex);
         }
         IniciarLeilaoFrame l = new IniciarLeilaoFrame();
-        l.leiloar(Integer.parseInt(jTextFieldPorta.getText()), produtos);
+        l.leiloar( produtos);
         l.setVisible(true);
     }//GEN-LAST:event_jButtonIniciarActionPerformed
     public void atualizarProduto(){

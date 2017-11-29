@@ -5,10 +5,16 @@
  */
 package br.com.aaej.leilaotabajaracliente;
 
+import br.com.aaej.leilaotabajaraserver.LeilaoInterface;
 import br.com.aaej.leilaotabajaraserver.Produto;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
+import java.rmi.AccessException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -222,13 +228,17 @@ public class ClienteFrame extends javax.swing.JFrame {
         String ip = jTextFieldIpServer.getText();
         String nome = jTextFieldName.getText();
         if (!porta.equals("") || !ip.equals("") || !nome.equals("")) {
+            Registry reg;
             try {
-                this.conexao = new Cliente(Integer.parseInt(porta), ip, this);
-                conexao.start();
-                conexao.send("1;" + nome);
-            } catch (IOException ex) {
+                reg = LocateRegistry.getRegistry("192.168.1.109", 50000);
+                LeilaoInterface app = (LeilaoInterface) reg.lookup("app");
+                addLog(app.Send("1;"+nome));
+            } catch (RemoteException ex) {
+                Logger.getLogger(ClienteFrame.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (NotBoundException ex) {
                 Logger.getLogger(ClienteFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
+            
         }else{
             System.out.println("Preencher todos os campos");
         }
@@ -239,7 +249,7 @@ public class ClienteFrame extends javax.swing.JFrame {
             String json = ler.get("http://localhost:42383/LeilaoWeb/webresources/leilao", "GET");
             Gson g = new Gson();
             System.out.println(json);
-            json.replaceAll("\\", "-");
+            json = json.replaceAll("\\", "");
             System.out.println(json);            
             java.lang.reflect.Type tipo = new TypeToken<ArrayList<Produto>>(){}.getType();
             this.produtos = g.fromJson(json,tipo);
