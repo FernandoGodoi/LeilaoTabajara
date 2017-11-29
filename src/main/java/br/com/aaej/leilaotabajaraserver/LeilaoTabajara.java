@@ -139,8 +139,13 @@ public class LeilaoTabajara extends javax.swing.JFrame {
         // TODO add your handling code here:
         GerarXML xml = new GerarXML();
         try {
-            xml.gerar(produtos);
+            String r = xml.gerar(produtos);
+            SendWS send = new SendWS();
+            String url = "http://localhost:8080/LeilaoWS/webresources/leilao/Enviar";
+            System.out.println(send.sendPost(url, r, "POST"));
         } catch (IOException ex) {
+            Logger.getLogger(LeilaoTabajara.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
             Logger.getLogger(LeilaoTabajara.class.getName()).log(Level.SEVERE, null, ex);
         }
         IniciarLeilaoFrame l = new IniciarLeilaoFrame();

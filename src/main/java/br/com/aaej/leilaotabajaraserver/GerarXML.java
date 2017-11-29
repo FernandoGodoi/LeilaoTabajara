@@ -20,7 +20,7 @@ import org.jdom.output.XMLOutputter;
 public class GerarXML {    
     public GerarXML(){
     }
-    public void gerar(ArrayList<Produto> produtos) throws IOException{
+    public String gerar(ArrayList<Produto> produtos) throws IOException{
         Element root = new Element("List");
         produtos.forEach((p) -> {
             Element produto = new Element("Produto");
@@ -36,6 +36,8 @@ public class GerarXML {
         XMLOutputter outputter = new XMLOutputter(Format.getPrettyFormat().setEncoding("ISO-8859-1"));
         outputter.output(doc, new PrintWriter(System.out));
         outputter.output(doc, new PrintWriter("ListaProdutos.xml"));
+        String r = ""+root;
+        return r;
         
     }
 }

@@ -6,6 +6,8 @@
 package br.com.aaej.leilaotabajaracliente;
 
 import br.com.aaej.leilaotabajaraserver.Produto;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -230,8 +232,20 @@ public class ClienteFrame extends javax.swing.JFrame {
         }else{
             System.out.println("Preencher todos os campos");
         }
-        LerXML lerXML = new LerXML();
-        this.produtos = lerXML.getList();
+        //LerXML lerXML = new LerXML();
+        //this.produtos = lerXML.getList();
+        HttpGetProtutos ler = new HttpGetProtutos();
+        try {
+            String json = ler.get("http://localhost:50301/LeilaoWS/webresources/leilao", "GET");
+            Gson g = new Gson();
+            System.out.println(json);
+            java.lang.reflect.Type tipo = new TypeToken<ArrayList<Produto>>(){}.getType();
+            this.produtos = g.fromJson(json,tipo);
+            System.out.println("ok");
+        } catch (Exception ex) {
+            Logger.getLogger(ClienteFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         atualizarProdutos();
     }//GEN-LAST:event_jButtonConectActionPerformed
 
