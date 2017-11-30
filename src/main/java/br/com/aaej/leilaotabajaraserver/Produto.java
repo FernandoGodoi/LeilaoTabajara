@@ -78,7 +78,7 @@ public class Produto {
         return this.nome+";"+this.precoInicial+";"+this.caracteristica;
     }
     public String listar(){
-        return this.nome+ "  Preço inicial: "+this.precoInicial+ "|  Lance vencedor: "+this.nomeVencedor +"= "+this.precoVencedor;
+        return this.nome+ "  Preço inicial: "+this.precoInicial+ "|  Lance vencedor: "+this.precoVencedor +"= "+this.nomeVencedor;
     }
     
 }

@@ -125,7 +125,7 @@ public class LeilaoTabajara extends javax.swing.JFrame {
             String r = g.toJson(produtos);
             System.out.println("enviando json : "+r);
             SendWS send = new SendWS();
-            String url = "http://177.132.146.47:50301/LeilaoWS/webresources/leilao";
+            String url = "http://localhost:42383/LeilaoWeb/webresources/leilao";
             System.out.println(send.sendPost(url, r, "PUT"));
         //} catch (IOException ex) {
         //  Logger.getLogger(LeilaoTabajara.class.getName()).log(Level.SEVERE, null, ex);

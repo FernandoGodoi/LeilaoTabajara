@@ -54,7 +54,7 @@ public class IniciarLeilaoFrame extends javax.swing.JFrame {
     
     public void startRMI(){
         try {
-            System.setProperty("java.rmi.server.hostname", "192.168.25.67");
+            System.setProperty("java.rmi.server.hostname", "10.151.34.51");
             Registry reg = LocateRegistry.createRegistry(50000);
             LeilaoRMIApp app = new LeilaoRMIApp(this);
             reg.rebind("app", app);

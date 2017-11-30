@@ -175,12 +175,13 @@ public class ClienteFrame extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 940, Short.MAX_VALUE))
-            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(34, 34, 34)
                 .addComponent(jLabel5)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 740, Short.MAX_VALUE))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1)
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -238,7 +239,7 @@ public class ClienteFrame extends javax.swing.JFrame {
         if (!porta.equals("") || !ip.equals("") || !nome.equals("")) {
             Registry reg;
             try {
-                reg = LocateRegistry.getRegistry("192.168.25.67", 50000);
+                reg = LocateRegistry.getRegistry("10.151.34.51", 50000);
                 app = (LeilaoInterface) reg.lookup("app");
                 addLog(app.Send("1;" + nome));
             } catch (RemoteException ex) {
@@ -256,7 +257,7 @@ public class ClienteFrame extends javax.swing.JFrame {
         //this.produtos = lerXML.getList();
         HttpGetProtutos ler = new HttpGetProtutos();
         try {
-            String json = ler.get("http://177.132.146.47:50301/LeilaoWS/webresources/leilao", "GET");
+            String json = ler.get("http://localhost:42383/LeilaoWeb/webresources/leilao", "GET");
             Gson g = new Gson();
             System.out.println(json);
             json = json.replace("\\", "");
@@ -297,7 +298,7 @@ public class ClienteFrame extends javax.swing.JFrame {
             } else {
                 finalizado = "Aberto";
             }
-            listModel.addElement("Numero item:" + i + " " + p.listar() + "Situação: " + finalizado);
+            listModel.addElement("Numero item:"+ i +"Situação: "+finalizado+p.listar());
             i++;
         });
         jList1.setModel(listModel);
