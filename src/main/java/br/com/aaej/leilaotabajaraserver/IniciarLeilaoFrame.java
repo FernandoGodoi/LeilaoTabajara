@@ -28,6 +28,7 @@ public class IniciarLeilaoFrame extends javax.swing.JFrame {
     //Servidor server;
     int i;
     ArrayList<Conexao> conexoes = new ArrayList<>();
+    ConexaoMultcast mult;
 
     public IniciarLeilaoFrame() {
         initComponents();
@@ -39,16 +40,21 @@ public class IniciarLeilaoFrame extends javax.swing.JFrame {
 //        this.server = new Servidor(porta, this);;;
 //        server.start();
         startRMI();
+        startMuiltcast();
         atualizarProdutos();
     }
     
     public void send(String data){
         
     }
+    public void startMuiltcast(){
+        this.mult= new ConexaoMultcast(6666, "Servidor", "228.5.6.7");
+        mult.start();
+    }
     
     public void startRMI(){
         try {
-            System.setProperty("java.rmi.server.hostname", "192.168.1.109");
+            System.setProperty("java.rmi.server.hostname", "192.168.25.67");
             Registry reg = LocateRegistry.createRegistry(50000);
             LeilaoRMIApp app = new LeilaoRMIApp(this);
             reg.rebind("app", app);
@@ -78,7 +84,7 @@ public class IniciarLeilaoFrame extends javax.swing.JFrame {
         
     }
     public void atualizarClientes(String msg){
-        
+        mult.enviarMensagem(msg.getBytes());
     }
     public void adicionarConexao(Conexao c) {
         conexoes.add(c);

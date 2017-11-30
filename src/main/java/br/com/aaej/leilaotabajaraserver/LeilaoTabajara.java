@@ -38,9 +38,6 @@ public class LeilaoTabajara extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList<>();
-        jLabel1 = new javax.swing.JLabel();
-        jTextFieldPorta = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
         jButtonAdicionarProduto = new javax.swing.JButton();
         jButtonEditarProduto = new javax.swing.JButton();
         jButtonIniciar = new javax.swing.JButton();
@@ -53,10 +50,6 @@ public class LeilaoTabajara extends javax.swing.JFrame {
             public String getElementAt(int i) { return strings[i]; }
         });
         jScrollPane1.setViewportView(jList1);
-
-        jLabel1.setText("Porta: ");
-
-        jLabel2.setText("1 - 65535");
 
         jButtonAdicionarProduto.setText("Adicionar Produto");
         jButtonAdicionarProduto.addActionListener(new java.awt.event.ActionListener() {
@@ -85,17 +78,9 @@ public class LeilaoTabajara extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(22, 22, 22)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButtonAdicionarProduto)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonEditarProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(3, 3, 3)
-                        .addComponent(jTextFieldPorta, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel2)))
+                .addComponent(jButtonAdicionarProduto)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonEditarProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(370, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
@@ -107,12 +92,7 @@ public class LeilaoTabajara extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jTextFieldPorta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
-                .addGap(18, 18, 18)
+                .addGap(49, 49, 49)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonAdicionarProduto)
                     .addComponent(jButtonEditarProduto))
@@ -145,7 +125,7 @@ public class LeilaoTabajara extends javax.swing.JFrame {
             String r = g.toJson(produtos);
             System.out.println("enviando json : "+r);
             SendWS send = new SendWS();
-            String url = "http://localhost:42383/LeilaoWeb/webresources/leilao";
+            String url = "http://177.132.146.47:50301/LeilaoWS/webresources/leilao";
             System.out.println(send.sendPost(url, r, "PUT"));
         //} catch (IOException ex) {
         //  Logger.getLogger(LeilaoTabajara.class.getName()).log(Level.SEVERE, null, ex);
@@ -202,10 +182,7 @@ public class LeilaoTabajara extends javax.swing.JFrame {
     private javax.swing.JButton jButtonAdicionarProduto;
     private javax.swing.JButton jButtonEditarProduto;
     private javax.swing.JButton jButtonIniciar;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JList<String> jList1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextFieldPorta;
     // End of variables declaration//GEN-END:variables
 }

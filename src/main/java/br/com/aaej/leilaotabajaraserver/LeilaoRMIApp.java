@@ -32,11 +32,11 @@ public class LeilaoRMIApp extends UnicastRemoteObject implements LeilaoInterface
                 leilao.atualizarConexao();
                 return "1;Registrado!";
             case 2:
-                Produto p = leilao.produtos.get(Integer.parseInt(msg[2]));
+                Produto p = leilao.produtos.get(Integer.parseInt(msg[1]));
                 if (p.isFinalizado()) {
                     return "1;Este produto foi Finalizado!";
                 } else {
-                    if (p.getPrecoVencedor() >= Double.parseDouble(msg[3])) {
+                    if (p.getPrecoVencedor() >= Double.parseDouble(msg[2])) {
                         return "1;Valor invalido";
                     } else {
                         

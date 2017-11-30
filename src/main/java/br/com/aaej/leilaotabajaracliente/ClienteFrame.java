@@ -29,12 +29,14 @@ public class ClienteFrame extends javax.swing.JFrame {
     /**
      * Creates new form ClienteFrame
      */
-    
     DefaultListModel listModelLog = new DefaultListModel();
     ArrayList<Produto> produtos;
     Cliente conexao;
     int i;
     String finalizado;
+    ConexaoMultcastCliente multcast;
+    LeilaoInterface app;
+    String nome;
 
     public ClienteFrame() {
         initComponents();
@@ -73,9 +75,13 @@ public class ClienteFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Ip Servidor:");
+        jLabel1.setText("Grupo:");
+
+        jTextFieldIpServer.setText("228.5.6.7");
 
         jLabel2.setText("Porta:");
+
+        jTextFieldServerPort.setText("6666");
 
         jButtonConect.setText("Conectar");
         jButtonConect.addActionListener(new java.awt.event.ActionListener() {
@@ -98,6 +104,8 @@ public class ClienteFrame extends javax.swing.JFrame {
         });
 
         jLabel8.setText("Nome:");
+
+        jTextFieldName.setText("Fernando");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -226,69 +234,76 @@ public class ClienteFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         String porta = jTextFieldServerPort.getText();
         String ip = jTextFieldIpServer.getText();
-        String nome = jTextFieldName.getText();
+        nome = jTextFieldName.getText();
         if (!porta.equals("") || !ip.equals("") || !nome.equals("")) {
             Registry reg;
             try {
-                reg = LocateRegistry.getRegistry("192.168.1.109", 50000);
-                LeilaoInterface app = (LeilaoInterface) reg.lookup("app");
-                addLog(app.Send("1;"+nome));
+                reg = LocateRegistry.getRegistry("192.168.25.67", 50000);
+                app = (LeilaoInterface) reg.lookup("app");
+                addLog(app.Send("1;" + nome));
             } catch (RemoteException ex) {
                 Logger.getLogger(ClienteFrame.class.getName()).log(Level.SEVERE, null, ex);
             } catch (NotBoundException ex) {
                 Logger.getLogger(ClienteFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
-        }else{
+            multcast = new ConexaoMultcastCliente(Integer.parseInt(porta), nome, ip, this);
+            multcast.start();
+
+        } else {
             System.out.println("Preencher todos os campos");
         }
         //LerXML lerXML = new LerXML();
         //this.produtos = lerXML.getList();
         HttpGetProtutos ler = new HttpGetProtutos();
         try {
-            String json = ler.get("http://localhost:42383/LeilaoWeb/webresources/leilao", "GET");
+            String json = ler.get("http://177.132.146.47:50301/LeilaoWS/webresources/leilao", "GET");
             Gson g = new Gson();
             System.out.println(json);
-            json = json.replaceAll("\\", "");
-            System.out.println(json);            
-            java.lang.reflect.Type tipo = new TypeToken<ArrayList<Produto>>(){}.getType();
-            this.produtos = g.fromJson(json,tipo);
+            json = json.replace("\\", "");
+            json = json.substring(0, json.length() - 1);
+            json = json.substring(1);
+            System.out.println(json);
+            java.lang.reflect.Type tipo = new TypeToken<ArrayList<Produto>>() {
+            }.getType();
+            this.produtos = g.fromJson(json, tipo);
             System.out.println("ok");
         } catch (Exception ex) {
             Logger.getLogger(ClienteFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         atualizarProdutos();
     }//GEN-LAST:event_jButtonConectActionPerformed
 
     private void jButtonSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSendActionPerformed
         try {
             // TODO add your handling code here:
-            conexao.send("2;"+jTextFieldItem.getText()+";"+jTextFieldValor.getText() );
-        } catch (IOException ex) {
+            addLog(app.Send("2;" + jTextFieldItem.getText() + ";" + jTextFieldValor.getText() + ";"+nome));
+        } catch (RemoteException ex) {
             Logger.getLogger(ClienteFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButtonSendActionPerformed
-    public void addLog(String text){
+    public void addLog(String text) {
         listModelLog.addElement(text);
         jList2.setModel(listModelLog);
     }
-    public void atualizarProdutos() {        
+
+    public void atualizarProdutos() {
         DefaultListModel listModel = new DefaultListModel();
         i = 0;
         produtos.forEach((p) -> {
-            
+
             if (p.isFinalizado()) {
                 finalizado = "Finalizado";
             } else {
                 finalizado = "Aberto";
             }
-            listModel.addElement("Numero item:"+ i +" "+p.listar()+"Situação: "+finalizado);
+            listModel.addElement("Numero item:" + i + " " + p.listar() + "Situação: " + finalizado);
             i++;
-        });        
+        });
         jList1.setModel(listModel);
-        
+
     }
+
     /**
      * @param args the command line arguments
      */
